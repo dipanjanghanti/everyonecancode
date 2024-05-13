@@ -29,7 +29,7 @@ async def get_container_client():
     """Get a client to interact with the blob storage container."""
     global shared_container_client
     if not shared_container_client:
-        connection_string = os.environ["CUSTOMCONNSTR_STORAGE"]
+        connection_string = os.environ["MILIGRAM_STORAGE"]
         service = BlobServiceClient.from_connection_string(conn_str=connection_string)
 
         # Get a client to interact with a specific container - though it may not yet exist
@@ -56,11 +56,11 @@ async def get_openai_client():
 async def unicorn_exception_handler(request: Request, exc: KeyError):
     """Handle missing environment variables."""
     match exc.args[0]:
-      case "CUSTOMCONNSTR_STORAGE":
+      case "MILIGRAM_STORAGE":
         return JSONResponse(
             status_code=500,
             content={
-                "message": f"Oops! You forgot to set the STORAGE connection string for your Azure Storage Account. You can test locally by setting CUSTOMCONNSTR_STORAGE. 🤓"
+                "message": f"Oops! You forgot to set the STORAGE connection string for your Azure Storage Account. You can test locally by setting MILIGRAM_STORAGE. 🤓"
             },
         )
       case "CHAT_API_KEY":
